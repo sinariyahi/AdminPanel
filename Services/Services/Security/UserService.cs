@@ -51,7 +51,8 @@ public class UserService : IUserService,IBaseSevice
         var outPut = new PagedList<UserGridView>();
         var t = _userRepository.TableNoTracking.Where(x => x.UserName.Contains(name)).OrderByDescending(d => d.Id);
         outPut.TotalCount = await t.CountAsync();
-        outPut.list = await t.Skip(pageNumber * pageSize).Take(pageSize).ProjectTo<UserGridView>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+        outPut.list = await t.Skip(pageNumber * pageSize).Take(pageSize)
+            .ProjectTo<UserGridView>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
         return outPut;
     }
     public async Task<User> FindByIdAsync( int id, CancellationToken cancellationToken)

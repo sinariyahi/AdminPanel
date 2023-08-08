@@ -62,5 +62,5 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
-//app.IntializeDatabase();
+app.IntializeDatabase();
 app.Run();
