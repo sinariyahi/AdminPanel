@@ -10,37 +10,37 @@ namespace WebAPi.Controllers.v1
     [ApiController]
     public class SubcategoryController : ControllerBase
     {
-        private readonly ISubcategoriesRepository subcategoriesRepository;
-        private readonly IProducerRepository producerRepository;
+        private readonly ISubcategoriesRepository _subcategoriesRepository;
+        private readonly IProducerRepository _producerRepository;
+        private ISubcategoriesRepository @object;
 
         public SubcategoryController(ISubcategoriesRepository subcategoriesRepository, IProducerRepository producerRepository)
         {
-            this.subcategoriesRepository = subcategoriesRepository;
-            this.producerRepository = producerRepository;
+            _subcategoriesRepository = subcategoriesRepository;
+            _producerRepository = producerRepository;
         }
 
-        //[HttpGet]
-        //public ICollection<Subcategory> Index()
-        //{
-        //    return subcategoriesRepository.GetAllSubcategories();
-        //}
+        public SubcategoryController(ISubcategoriesRepository @object)
+        {
+            this.@object = @object;
+        }
 
-        //[HttpGet("{id:required}")]
-        //public SubcategoryPageDTO Subcategory(int id, int? page, int? limit)
-        //{
-        //    var result = new SubcategoryPageDTO
-        //    {
-        //        Subcategory = subcategoriesRepository.GetSubcategory(id),
-        //        Products = subcategoriesRepository.GetProductsForSubcategory(id, page ?? 1, limit ?? 20)
-        //    };
+        [HttpPost("create")]
+        public async Task<ActionResult<Subcategory>> Post(Subcategory subcategory, CancellationToken cancellationToken)
+        {
+            return Ok(await _subcategoriesRepository.AddSubcategoryAsync(subcategory, cancellationToken));
+        }
+        [HttpPut("update")]
+        public async Task<ActionResult<Subcategory>> Put(Subcategory subcategory, CancellationToken cancellationToken)
+        {
+            return Ok(await _subcategoriesRepository.UpdateSubcategoryAsync(subcategory, cancellationToken));
+        }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Subcategory>> Get(int id, CancellationToken cancellationToken)
+        {
+            return Ok(await _subcategoriesRepository.FindSubcategoryAsync(id, cancellationToken));
+        }
 
-        //    foreach (var product in result.Products)
-        //    {
-        //        product.Producer = producerRepository.GetProducer(product.ProducerID);
-        //    }
-
-        //    return result;
-        //}
     }
 }
 

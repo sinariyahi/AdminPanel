@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Interface.Security;
 
 namespace WebAPi.Controllers.v1;
-public class UserController : BaseController
+public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IMapper _mapper;   
@@ -17,9 +17,20 @@ public class UserController : BaseController
         _mapper = mapper;
     }
     [HttpGet]
-    public async Task<PagedList<UserGridView>> Index(CancellationToken cancellationToken, string userName, int pageNumber = 0, int pagesize = 10)
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken, string userName, int pageNumber = 0, int pagesize = 10)
     {
-        return await _userService.GetAll(pageNumber, pagesize, userName, cancellationToken);
+    try
+            {
+                var result = await _userService.GetAll(pageNumber, pagesize, userName, cancellationToken);
+                //return Ok();
+                return StatusCode(200, result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+
+            }
+
     }
     [HttpPost("create")]
     public async Task<ActionResult<UserDTO>> Post(UserDTO user, CancellationToken cancellationToken)
