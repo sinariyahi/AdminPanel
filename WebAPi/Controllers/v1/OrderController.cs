@@ -19,10 +19,22 @@ namespace WebAPi.Controllers.v1
         }
 
         [HttpGet]
-        public async Task<PagedList<OrderGridView>> Index(CancellationToken cancellationToken, string name, int pageNumber = 0, int pagesize = 10)
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken, string name, int pageNumber = 0, int pagesize = 10)
         {
-            return await _orderRepository.GetAll(pageNumber, pagesize, name, cancellationToken);
+            try
+            {
+                var result = await _orderRepository.GetAll(pageNumber, pagesize, name, cancellationToken);
+                //return Ok();
+                return StatusCode(200, result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+
+            }
+
         }
+    
         [HttpPost("create")]
         public async Task<ActionResult<Order>> Post(Order order, CancellationToken cancellationToken)
         {
