@@ -1,7 +1,4 @@
-﻿using Domain.Common;
-using Domain.Entities;
-using Domain.Models.Dto;
-using Microsoft.AspNetCore.Http;
+﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interface;
 
@@ -19,7 +16,7 @@ namespace WebAPi.Controllers.v1
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll (CancellationToken cancellationToken, string name, int pageNumber = 0, int pagesize = 10)
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken, string name, int pageNumber = 0, int pagesize = 10)
         {
             try
             {
@@ -45,6 +42,11 @@ namespace WebAPi.Controllers.v1
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> Get(int id, CancellationToken cancellationToken)
+        {
+            return await NewMethod(id, cancellationToken);
+        }
+
+        private async Task<ActionResult<Product>> NewMethod(int id, CancellationToken cancellationToken)
         {
             return Ok(await _productRepository.FindProductAsync(id, cancellationToken));
         }

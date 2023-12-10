@@ -28,4 +28,5 @@ namespace Domain.Models.Dto
         }
 
     }
+
 }

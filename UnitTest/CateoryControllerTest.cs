@@ -37,6 +37,7 @@ public class CateoryControllerTest
         var list = new PagedList<CateGoryGridView>();
         list.list = catList;
         _categoriesRepoMock.Setup(repo => repo.GetAll(2, 10, "", new CancellationToken())).ReturnsAsync(list);
+
         _categoryController = new CategoryController(_categoriesRepoMock.Object);
         var result = await _categoryController.GetAll(new CancellationToken(), "");
         var obj = result as ObjectResult;
